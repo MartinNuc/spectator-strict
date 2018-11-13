@@ -1,31 +1,14 @@
-import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { createHostComponentFactory, SpectatorWithHost } from '@netbasal/spectator';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+  let host: SpectatorWithHost<AppComponent>;
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'spectator-strict'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('spectator-strict');
-  });
+  const createHost = createHostComponentFactory(AppComponent);
 
   it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to spectator-strict!');
+    host = createHost(`<app-root></app-root>`);
+    host.detectChanges();
+    expect(host.query('h1').textContent).toContain('Welcome to spectator-strict!');
   });
 });
